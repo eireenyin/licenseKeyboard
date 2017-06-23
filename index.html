@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="dist/images/guicheng.ico">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>keyboard</title>
+    <link href="./dist/css/keyboard.min.css" rel="stylesheet">
+    <script type='application/javascript' src='./dist/js/libs/fastclick.js'></script>
+    <style>
+      html , body {
+        height: 100%;
+        tap-highlight-color:transparent;
+      }
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        overflow-x: hidden;
+        letter-spacing: 0.2px;
+        background-color: #EDF2F8;
+        -webkit-touch-callout: none;
+        user-select:none;
+        font-size: 14px;
+        line-height: 1.6;
+        padding:0;
+        margin:0;
+      }
+      .container {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling:touch;
+      }
+      #testPlate {
+        margin:20px;
+        height: 44px;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+      <input type="text" id="testPlate" readonly data-role="keyboard">
+      <span data-role="keyboard" placeholder="请输入车牌号" style="display: block;width: 100px;height: 34px;border: 1px solid #666666;"></span>
+      <!--
+        自定义键盘
+          -属性，若不是需要车牌为空时显示占位符，则给添加 属性 placeholder
+        参数：
+          length （Number): 车牌的长度，默认为7，只有 7 或 8 两个取值
+          hiddenCallback (function) : 隐藏自定义键盘的回调
+          confirmCallback (function) : 自定义键盘点击确认时的回调,调用在hiddenCallback 之前 
+        调用方式：
+          1： $('#id').keyboard();
+              可传参数： 如果要默认输入新能源车牌，则 $('#id').keyboard({length:8})
+              $('#id').keyboard({
+                  hiddenCallback: hiddenCallback,
+                  confirmCallback: confirmCallback
+              })
+          2: 直接在给元素赋属性   data-role="keyboard"
+             如果想要打开即是输入新能源车牌， 则  data-length="8" ,如果默认为7则可不传
+        获取车牌颜色： （默认为蓝牌）会自动给元素加上一个 data-color="blue/yellow/black/white"的属性
+         获取颜色-》 $('#id').data('color');
+
+        调用keyboard插件的方法(通过 $.fn.keyboard.Constructor.prototype 查看有哪些方法可以调用)，
+          $.fn.keyboard.Constructor.prototype.XXX()
+      -->
+
+      <!--<div id="keyboard_box" class="keyboard-wrapper toggle">
+        <div class="keyboard-header">
+          <h3 class="header-title">普通车牌录入</h3>
+          <a class="close">&times;</a>
+        </div>
+        <div class="plate-wrapper">
+          <div class="plate-box has-eight-item">
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item"></span>
+            <span class="plate-item eighth-item"></span>
+          </div>
+          <div class="plate-setting">
+            <div class="blue-plate-box clearfix">
+              <div class="iradio-box">
+                <input type="radio" name="plate-color" id="blue" class="iradio blue">
+                <label class="iradio-text" for="blue">蓝牌</label>
+              </div>
+              <div class="iradio-box">
+                <input type="radio" name="plate-color" id="yellow" class="iradio yellow">
+                <label class="iradio-text" for="yellow">黄牌</label>
+              </div>
+              <div class="iradio-box">
+                <input type="radio" name="plate-color" id="white" class="iradio white">
+                <label class="iradio-text" for="white">白牌</label>
+              </div>
+              <div class="iradio-box">
+                <input type="radio" name="plate-color" id="black" class="iradio black">
+                <label class="iradio-text" for="black">黑牌</label>
+              </div>
+            </div>
+            <div class="plate-type-box">
+              <span id="energyPlate" class="plate-type">新能源车牌录入&gt;&gt;</span>
+              <span id="normalPlate" class="plate-type hide">其他车牌录入&gt;&gt;</span>
+            </div>
+          </div>
+          <a class="ake-btn confirm-btn"><span class="lt20">确</span>定</a>
+        </div>
+        <div class="keyboard-container">
+          <ul class="keyboard-box">
+            <li class="keyboard-list">
+              <a class="kb-item">京</a>
+              <a class="kb-item">沪</a>
+              <a class="kb-item">粤</a>
+              <a class="kb-item">津</a>
+              <a class="kb-item">浙</a>
+              <a class="kb-item">苏</a>
+              <a class="kb-item">湘</a>
+              <a class="kb-item">渝</a>
+              <a class="kb-item">云</a>
+              <a class="kb-item">豫</a>
+              <a class="kb-item">皖</a>
+              <a class="kb-item">陕</a>
+              <a class="kb-item">桂</a>
+              <a class="kb-item">新</a>
+              <a class="kb-item">青</a>
+              <a class="kb-item">琼</a>
+              <a class="kb-item">闽</a>
+              <a class="kb-item">蒙</a>
+              <a class="kb-item">辽</a>
+              <a class="kb-item">宁</a>
+              <a class="kb-item">鲁</a>
+              <a class="kb-item">晋</a>
+              <a class="kb-item">吉</a>
+              <a class="kb-item">冀</a>
+              <a class="kb-item">黑</a>
+              <a class="kb-item">台</a>
+              <a class="kb-item">甘</a>
+              <a class="kb-item">鄂</a>
+              <a class="kb-item">赣</a>
+              <a class="kb-item">贵</a>
+              <a class="kb-item">川</a>
+              <a class="kb-item">藏</a>
+            </li>
+            <li class="keyboard-list ake-hide">
+              <a class="kb-item">1</a>
+              <a class="kb-item">2</a>
+              <a class="kb-item">3</a>
+              <a class="kb-item">4</a>
+              <a class="kb-item">5</a>
+              <a class="kb-item">6</a>
+              <a class="kb-item">7</a>
+              <a class="kb-item">8</a>
+              <a class="kb-item">9</a>
+              <a class="kb-item">0</a>
+            </li>
+            <li class="keyboard-list ake-hide">
+              <a class="kb-item">A</a>
+              <a class="kb-item">B</a>
+              <a class="kb-item">C</a>
+              <a class="kb-item">D</a>
+              <a class="kb-item">E</a>
+              <a class="kb-item">F</a>
+              <a class="kb-item">G</a>
+              <a class="kb-item">H</a>
+              <a class="kb-item">I</a>
+              <a class="kb-item">J</a>
+              <a class="kb-item">K</a>
+              <a class="kb-item">L</a>
+              <a class="kb-item">M</a>
+              <a class="kb-item">N</a>
+              <a class="kb-item">O</a>
+              <a class="kb-item">P</a>
+              <a class="kb-item">Q</a>
+              <a class="kb-item">R</a>
+              <a class="kb-item">S</a>
+              <a class="kb-item">T</a>
+              <a class="kb-item">U</a>
+              <a class="kb-item">V</a>
+              <a class="kb-item">W</a>
+              <a class="kb-item">X</a>
+              <a class="kb-item">Y</a>
+              <a class="kb-item">Z</a>
+            </li>
+            <li class="keyboard-list operate-list">
+              <a class="kb-item clear-all">重输</a>
+              <a class="kb-item delete-one"><span class="delete-icon">&times;</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>-->
+
+      <!-- keyboard -->
+      <!-- <div id="keyboard_dialog">
+          <div class="plateNum_dialog">
+              <div class="dialog_hd"><strong class="dialog_title">增加车牌</strong></div>
+              <div class="dialog_bd">
+                <div class="plateNum">
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                </div>
+                <a href="javascript:" class="text_btn" id="removePlateNum">清空</a>
+              </div>
+              <div class="dialog_ft">
+                  <a href="javascript:;" class="btn btn_default" id="close_keyboard">取消</a>
+                  <a href="javascript:;" class="btn btn_primary" id="saveAndCloseKeyboard">确定</a>
+              </div>
+          </div>
+
+          <div class="ake_mask"></div>
+          <div class="keyboard_container">
+              <ul class="keyboard">
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">京</a>
+                      <a href="javascript:;">沪</a>
+                      <a href="javascript:;">粤</a>
+                      <a href="javascript:;">津</a>
+                      <a href="javascript:;">浙</a>
+                      <a href="javascript:;">苏</a>
+                      <a href="javascript:;">湘</a>
+                      <a href="javascript:;">渝</a>
+                      <a href="javascript:;">云</a>
+                      <a href="javascript:;">豫</a>
+                      <a href="javascript:;">皖</a>
+                      <a href="javascript:;">桂</a>
+                      <a href="javascript:;">新</a>
+                      <a href="javascript:;">青</a>
+                      <a href="javascript:;">琼</a>
+                      <a href="javascript:;">闽</a>
+                      <a href="javascript:;">蒙</a>
+                      <a href="javascript:;">辽</a>
+                      <a href="javascript:;">宁</a>
+                      <a href="javascript:;">鲁</a>
+                      <a href="javascript:;">晋</a>
+                      <a href="javascript:;">吉</a>
+                      <a href="javascript:;">冀</a>
+                      <a href="javascript:;">黑</a>
+                      <a href="javascript:;">甘</a>
+                      <a href="javascript:;">鄂</a>
+                      <a href="javascript:;">赣</a>
+                      <a href="javascript:;">贵</a>
+                      <a href="javascript:;">川</a>
+                      <a href="javascript:;">藏</a>
+                    </div>
+                  </li>
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">A</a>
+                      <a href="javascript:;">B</a>
+                      <a href="javascript:;">C</a>
+                      <a href="javascript:;">D</a>
+                      <a href="javascript:;">E</a>
+                      <a href="javascript:;">F</a>
+                      <a href="javascript:;">G</a>
+                      <a href="javascript:;">H</a>
+                      <a href="javascript:;">J</a>
+                      <a href="javascript:;">K</a>
+                      <a href="javascript:;">L</a>
+                      <a href="javascript:;">M</a>
+                      <a href="javascript:;">N</a>
+                      <a href="javascript:;">O</a>
+                      <a href="javascript:;">P</a>
+                      <a href="javascript:;">Q</a>
+                      <a href="javascript:;">R</a>
+                      <a href="javascript:;">S</a>
+                      <a href="javascript:;">T</a>
+                      <a href="javascript:;">U</a>
+                      <a href="javascript:;">V</a>
+                      <a href="javascript:;">W</a>
+                      <a href="javascript:;">X</a>
+                      <a href="javascript:;">Y</a>
+                      <a href="javascript:;">Z</a>
+                    </div>
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">1</a>
+                      <a href="javascript:;">2</a>
+                      <a href="javascript:;">3</a>
+                      <a href="javascript:;">4</a>
+                      <a href="javascript:;">5</a>
+                      <a href="javascript:;">6</a>
+                      <a href="javascript:;">7</a>
+                      <a href="javascript:;">8</a>
+                      <a href="javascript:;">9</a>
+                      <a href="javascript:;">0</a>
+                      <a href="javascript:;">A</a>
+                      <a href="javascript:;">B</a>
+                      <a href="javascript:;">C</a>
+                      <a href="javascript:;">D</a>
+                      <a href="javascript:;">E</a>
+                      <a href="javascript:;">F</a>
+                      <a href="javascript:;">G</a>
+                      <a href="javascript:;">H</a>
+                      <a href="javascript:;">I</a>
+                      <a href="javascript:;">J</a>
+                      <a href="javascript:;">K</a>
+                      <a href="javascript:;">L</a>
+                      <a href="javascript:;">M</a>
+                      <a href="javascript:;">N</a>
+                      <a href="javascript:;">O</a>
+                      <a href="javascript:;">P</a>
+                      <a href="javascript:;">Q</a>
+                      <a href="javascript:;">R</a>
+                      <a href="javascript:;">S</a>
+                      <a href="javascript:;">T</a>
+                      <a href="javascript:;">U</a>
+                      <a href="javascript:;">V</a>
+                      <a href="javascript:;">W</a>
+                      <a href="javascript:;">X</a>
+                      <a href="javascript:;">Y</a>
+                      <a href="javascript:;">Z</a>
+                      <a href="javascript:;" class="lastPlateNum">学</a>
+                      <a href="javascript:;" class="lastPlateNum">警</a>
+                      <a href="javascript:;" class="gh_item lastPlateNum">港</a>
+                      <a href="javascript:;" class="gh_item lastPlateNum">澳</a>
+                    </div>
+                  </li>
+              </ul>
+          </div>
+      </div> -->
+      <!-- keyboard end -->
+
+
+    </div>
+    <script src="./dist/js/libs/zepto.min.js"></script>
+    <script src="./dist/js/softKeyboard.js"></script>
+    <script>
+        Zepto(function($){
+          FastClick.attach(document.body);
+        })
+
+        $('#testPlate').keyboard({
+            headerText: '发送优惠券',
+            buttonText: '发券',
+            isAddColor: true,
+            isAutoFill: true,
+            // beforeOpenFn: function() {
+            //   return false;
+            // }
+        })
+
+        // setTimeout(function() {
+        //   $.fn.keyboard.kbData['1'].initShowEvt();
+        // }, 2000);
+    </script>
+</body>
+
+</html>

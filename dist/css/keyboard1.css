@@ -1,0 +1,233 @@
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.plateNum_dialog {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  right: 16px;
+  z-index: 10000;
+  background: #fff;
+  border-radius: 4px;
+}
+.plateNum_dialog .dialog_hd {
+  font-size: 16px;
+  text-align: left;
+  line-height: 1;
+  padding: 16px;
+}
+.plateNum_dialog .dialog_bd {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 16px;
+}
+.plateNum_dialog .dialog_bd .plateNum {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  font-size: 18px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  font-weight: bold;
+  position: relative;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item::after {
+  content: " ";
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item.selected {
+  color: #3983e3;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item.selected:after {
+  content: " ";
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #3983e3;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item:nth-child(2) {
+  margin-right: 15px;
+}
+.plateNum_dialog .dialog_bd .plateNum .plateNum_item:nth-child(3)::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #3983e3;
+}
+.plateNum_dialog .dialog_bd .text_btn {
+  display: inline-block;
+  height: 35px;
+  font-size: 14px;
+  padding: 0 6px 0 6px;
+  color: #ff4f00;
+  line-height: 35px;
+  margin-left: 6px;
+}
+.plateNum_dialog .dialog_bd .text_btn:active {
+  background-color: #e2e2e2;
+}
+.plateNum_dialog .dialog_ft {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  margin-top: 10px;
+}
+.plateNum_dialog .dialog_ft::before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  border-top: 1px solid #C7C7C7;
+  color: #C7C7C7;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+  z-index: 1000;
+}
+.plateNum_dialog .dialog_ft .btn {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 48px;
+  line-height: 48px;
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+}
+.plateNum_dialog .dialog_ft .btn:active {
+  background-color: #e2e2e2;
+}
+.plateNum_dialog .dialog_ft .btn_default {
+  color: #3983e3;
+  border-bottom-left-radius: 4px;
+  position: relative;
+}
+.plateNum_dialog .dialog_ft .btn_default::after {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  border-right: 1px solid #C7C7C7;
+  color: #C7C7C7;
+  -webkit-transform-origin: 100% 0;
+          transform-origin: 100% 0;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+}
+.plateNum_dialog .dialog_ft .btn_primary {
+  color: #3983e3;
+  border-bottom-right-radius: 4px;
+}
+#keyboard_dialog .ake_mask {
+  position: fixed;
+  z-index: 6000;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.keyboard_container {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  height: auto;
+  background: #e2e2e2;
+  z-index: 10000;
+}
+.keyboard {
+  padding: 10px;
+}
+@media screen and (max-width: 320px) {
+  .keyboard {
+    padding: 10px;
+  }
+}
+.keyboard .keyboard_item:not(:first-child) {
+  display: none;
+}
+.keyboard .keyboard_item .key_container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+}
+.keyboard .keyboard_item .key_container a {
+  background-color: #fff;
+  color: #666;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  min-width: 40px;
+  height: 40px;
+  margin: 3px;
+  line-height: 40px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.keyboard .keyboard_item .key_container a.active {
+  background-color: #3983e3;
+  color: #fff;
+}
+.keyboard .keyboard_item .key_container a.gh_item {
+  display: none;
+}
+.keyboard .keyboard_item .key_container a.lastPlateNum {
+  display: none;
+}

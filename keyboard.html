@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="dist/images/guicheng.ico">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>keyboard</title>
+    <link href="./dist/css/keyboard1.min.css" rel="stylesheet">
+    <script type='application/javascript' src='./dist/js/libs/fastclick.js'></script>
+    <style>
+      html , body {
+        height: 100%;
+        tap-highlight-color:transparent;
+      }
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        overflow-x: hidden;
+        letter-spacing: 0.2px;
+        background-color: #EDF2F8;
+        -webkit-touch-callout: none;
+        user-select:none;
+        font-size: 14px;
+        line-height: 1.6;
+        padding:0;
+        margin:0;
+      }
+      .container {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling:touch;
+      }
+      #testPlate {
+        margin:20px;
+        height: 44px;
+      }
+    </style>
+</head>
+
+<body ontouchstart="">
+    <div class="container">
+      <input type="text" id="testPlate" data-role="selfKb">
+
+      <!-- keyboard -->
+      <!-- <div id="keyboard_dialog">
+          <div class="plateNum_dialog">
+              <div class="dialog_hd"><strong class="dialog_title">增加车牌</strong></div>
+              <div class="dialog_bd">
+                <div class="plateNum">
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                    <span class="plateNum_item"></span>
+                </div>
+                <a href="javascript:" class="text_btn" id="removePlateNum">清空</a>
+              </div>
+              <div class="dialog_ft">
+                  <a href="javascript:;" class="btn btn_default" id="close_keyboard">取消</a>
+                  <a href="javascript:;" class="btn btn_primary" id="saveAndCloseKeyboard">确定</a>
+              </div>
+          </div>
+
+          <div class="ake_mask"></div>
+          <div class="keyboard_container">
+              <ul class="keyboard">
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">京</a>
+                      <a href="javascript:;">沪</a>
+                      <a href="javascript:;">粤</a>
+                      <a href="javascript:;">津</a>
+                      <a href="javascript:;">浙</a>
+                      <a href="javascript:;">苏</a>
+                      <a href="javascript:;">湘</a>
+                      <a href="javascript:;">渝</a>
+                      <a href="javascript:;">云</a>
+                      <a href="javascript:;">豫</a>
+                      <a href="javascript:;">皖</a>
+                      <a href="javascript:;">桂</a>
+                      <a href="javascript:;">新</a>
+                      <a href="javascript:;">青</a>
+                      <a href="javascript:;">琼</a>
+                      <a href="javascript:;">闽</a>
+                      <a href="javascript:;">蒙</a>
+                      <a href="javascript:;">辽</a>
+                      <a href="javascript:;">宁</a>
+                      <a href="javascript:;">鲁</a>
+                      <a href="javascript:;">晋</a>
+                      <a href="javascript:;">吉</a>
+                      <a href="javascript:;">冀</a>
+                      <a href="javascript:;">黑</a>
+                      <a href="javascript:;">甘</a>
+                      <a href="javascript:;">鄂</a>
+                      <a href="javascript:;">赣</a>
+                      <a href="javascript:;">贵</a>
+                      <a href="javascript:;">川</a>
+                      <a href="javascript:;">藏</a>
+                    </div>
+                  </li>
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">A</a>
+                      <a href="javascript:;">B</a>
+                      <a href="javascript:;">C</a>
+                      <a href="javascript:;">D</a>
+                      <a href="javascript:;">E</a>
+                      <a href="javascript:;">F</a>
+                      <a href="javascript:;">G</a>
+                      <a href="javascript:;">H</a>
+                      <a href="javascript:;">J</a>
+                      <a href="javascript:;">K</a>
+                      <a href="javascript:;">L</a>
+                      <a href="javascript:;">M</a>
+                      <a href="javascript:;">N</a>
+                      <a href="javascript:;">O</a>
+                      <a href="javascript:;">P</a>
+                      <a href="javascript:;">Q</a>
+                      <a href="javascript:;">R</a>
+                      <a href="javascript:;">S</a>
+                      <a href="javascript:;">T</a>
+                      <a href="javascript:;">U</a>
+                      <a href="javascript:;">V</a>
+                      <a href="javascript:;">W</a>
+                      <a href="javascript:;">X</a>
+                      <a href="javascript:;">Y</a>
+                      <a href="javascript:;">Z</a>
+                    </div>
+                  <li class="keyboard_item">
+                    <div class="key_container">
+                      <a href="javascript:;">1</a>
+                      <a href="javascript:;">2</a>
+                      <a href="javascript:;">3</a>
+                      <a href="javascript:;">4</a>
+                      <a href="javascript:;">5</a>
+                      <a href="javascript:;">6</a>
+                      <a href="javascript:;">7</a>
+                      <a href="javascript:;">8</a>
+                      <a href="javascript:;">9</a>
+                      <a href="javascript:;">0</a>
+                      <a href="javascript:;">A</a>
+                      <a href="javascript:;">B</a>
+                      <a href="javascript:;">C</a>
+                      <a href="javascript:;">D</a>
+                      <a href="javascript:;">E</a>
+                      <a href="javascript:;">F</a>
+                      <a href="javascript:;">G</a>
+                      <a href="javascript:;">H</a>
+                      <a href="javascript:;">I</a>
+                      <a href="javascript:;">J</a>
+                      <a href="javascript:;">K</a>
+                      <a href="javascript:;">L</a>
+                      <a href="javascript:;">M</a>
+                      <a href="javascript:;">N</a>
+                      <a href="javascript:;">O</a>
+                      <a href="javascript:;">P</a>
+                      <a href="javascript:;">Q</a>
+                      <a href="javascript:;">R</a>
+                      <a href="javascript:;">S</a>
+                      <a href="javascript:;">T</a>
+                      <a href="javascript:;">U</a>
+                      <a href="javascript:;">V</a>
+                      <a href="javascript:;">W</a>
+                      <a href="javascript:;">X</a>
+                      <a href="javascript:;">Y</a>
+                      <a href="javascript:;">Z</a>
+                      <a href="javascript:;" class="lastPlateNum">学</a>
+                      <a href="javascript:;" class="lastPlateNum">警</a>
+                      <a href="javascript:;" class="gh_item lastPlateNum">港</a>
+                      <a href="javascript:;" class="gh_item lastPlateNum">澳</a>
+                    </div>
+                  </li>
+              </ul>
+          </div>
+      </div> -->
+      <!-- keyboard end -->
+
+
+    </div>
+    <script src="./dist/js/libs/zepto.min.js"></script>
+    <script src="./dist/js/keyboard.min.js"></script>
+    <script>
+        Zepto(function($){
+          FastClick.attach(document.body);
+          $('#testPlate').keyboard();
+          
+        })
+    </script>
+</body>
+
+</html>
