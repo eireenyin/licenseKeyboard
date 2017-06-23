@@ -95,7 +95,8 @@
       isAutoFill: true,
       beforeOpenFn: null,
       confirmCallback: null,
-      hiddenCallback: null
+      hiddenCallback: null,
+      scanCallback: null
     };
 
     /**
@@ -147,11 +148,12 @@
 
       hideKeyboard: function() {
         var $Keyboard = $('#keyboard_wrapper'),
-            plateColor = $('input[name="plate-color"]:checked').val();
+            $CheckedColor = $('#keyboard_wrapper input[name="plate-color"]:checked'),
+            plateColor = $CheckedColor.val();
         if($Keyboard.hasClass('toggle')) {
             $Keyboard.removeClass('toggle');
         }
-        if ($('#plate_type_title').data('turn-type') === 7) {
+        if ($CheckedColor.hasClass('green')) {
            this.$element.data('color','');
         } else {
           this.$element.data('color',plateColor);
@@ -177,22 +179,14 @@
 
       changePlate: function (total_len) {
         var $PlateBox = $('#keyboard_wrapper #plate_box'),
-            // $HeaderTitle = $('#header_title'),
-            $PlateTypeTitle = $('#plate_type_title'),
             normal_text = this.options.text.normal,
             energy_text = this.options.text.energy;
         if(total_len == 7) {
             $PlateBox.removeClass('has-eight-item');
             $PlateBox.find('.eighth-item').text('').addClass('ake-hide');
-            // $HeaderTitle.text(normal_text);
-            $PlateTypeTitle.text(energy_text+'>>').data('turn-type',8);
-            $('.blue-plate-box').show();
         } else if(total_len == 8) {
             $PlateBox.addClass('has-eight-item');
             $PlateBox.find('.eighth-item').text('').removeClass('ake-hide');
-            // $HeaderTitle.text(energy_text);
-            $PlateTypeTitle.text(normal_text+'>>').data('turn-type',7);
-            $('.blue-plate-box').hide();
         }
       },
 
@@ -307,12 +301,18 @@
 
       setConfirmBtn: function() {
         var _length = this.options.length,
-            _licenseLen = this.getLicense(1);
-        if(_licenseLen == _length) {
-            $('#kb_confirm').removeClass('hide');
+            _licenseLen = this.getLicense(1),
+            type = $('#plate_type_title').data('type');
+        if(!type) {
+          if(_licenseLen == _length) {
+              $('#kb_confirm').removeClass('hide');
+          } else {
+              $('#kb_confirm').addClass('hide');
+          }
         } else {
-            $('#kb_confirm').addClass('hide');
+          $('#kb_confirm').removeClass('hide');
         }
+        
       },
 
       bindClickPanelEvts: function() {
@@ -383,10 +383,13 @@
         })
 
         //点击切换新能源车牌和普通车牌录入
-        $('#plate_type_title').off().on('click',function(e){
+        $('#keyboard_wrapper input[name="plate-color"]').off().on('click',function(e){
             e.stopPropagation();
-            var _type = Number($(this).data('turn-type')),
-                _licenseLen = -1,
+            var _type = 7;
+            if($(this).hasClass('green')) {
+              _type = 8;
+            }
+            var _licenseLen = -1,
                 _active = 0;
             _this.options.length = _type;
             _this.changePlate(_type);
@@ -402,13 +405,49 @@
         //点击确定
         $('#kb_confirm').off().on('click',function(e) {
             e.stopPropagation();
+            var _type = Number($('#plate_type_title').data('type')),
+                result = '';
+            result = !_type ? _this.getLicense() : $('#cardTicketText').val();
             if(_this.options.isAutoFill) {
-                kbPrivateMethod._setVal(_this.$element, _this.getLicense());
+                kbPrivateMethod._setVal(_this.$element, result);
             }
             if(_this.options.confirmCallback) {
-                _this.options.confirmCallback(_this.getLicense());
+                _this.options.confirmCallback(result);
             }
             _this.hideKeyboard();
+        })
+
+        $('#scanCode').off().on('click', function() {
+          if(_this.options.scanCallback) {
+            var result = _this.options.scanCallback();
+            $('#cardTicketText').val(result);
+          }
+        })
+
+        $('#plate_type_title').off().on('click', function() {
+          var _type = Number($(this).data('type')),
+              $PlateBox = $('#plate_box'),
+              $CardTickerBox = $('#cardTickt_box'),
+              $PlateColorBox = $('#keyboard_wrapper .blue-plate-box'),
+              $KeyboardBox = $('#keyboard_box'),
+              $ConfirmBtn = $('#kb_confirm');
+          if(_type) {
+            $(this).text('卡票号录入>>').data('type', 0);
+            $CardTickerBox.hide();
+            $PlateBox.show();
+            $PlateColorBox.show();
+            $KeyboardBox.show();
+            _this.fillPlate('');
+          } else {
+            $(this).text('车牌录入>>').data('type', 1);
+            $PlateBox.hide();
+            $CardTickerBox.show();
+            $PlateColorBox.hide();
+            $KeyboardBox.hide();
+            $ConfirmBtn.removeClass('hide');
+            $('#cardTicketText').val('');
+          }
+          _this.setConfirmBtn();
         })
       }
     };
@@ -435,31 +474,35 @@
             '            <span class="plate-item"></span>'+
             '            <span class="plate-item eighth-item"></span>'+
             '          </div>'+
+            '          <div id="cardTickt_box" class="plate-box card-ticket-box ake-hide">'+
+            '            <input type="text" class="card-ticket-text" id="cardTicketText">'+
+            '            <i id="scanCode" class="scan-icon"></i>'+
+            '          </div>'+
             '          <div class="plate-setting">'+
             '            <div class="blue-plate-box clearfix">'+
-            '<div class="iradio-box blue">'+
-            '                <input type="radio" name="plate-color" id="blue" class="iradio" value="蓝" checked><i class="icon"></i>'+
+            '<div class="iradio-box ">'+
+            '                <input type="radio" name="plate-color" id="blue" class="iradio blue" value="蓝" checked><i class="icon"></i>'+
             '                <label class="iradio-text blue" for="blue">蓝牌</label>'+
             '              </div>'+
-            '              <div class="iradio-box yellow">'+
-            '                <input type="radio" name="plate-color" id="yellow" class="iradio" value="黄"><i class="icon"></i>'+
+            '              <div class="iradio-box ">'+
+            '                <input type="radio" name="plate-color" id="yellow" class="iradio yellow" value="黄"><i class="icon"></i>'+
             '                <label class="iradio-text yellow" for="yellow">黄牌</label>'+
             '              </div>'+
-            '              <div class="iradio-box white">'+
-            '                <input type="radio" name="plate-color" id="white" class="iradio" value="白"><i class="icon"></i>'+
+            '              <div class="iradio-box ">'+
+            '                <input type="radio" name="plate-color" id="white" class="iradio white" value="白"><i class="icon"></i>'+
             '                <label class="iradio-text white" for="white">白牌</label>'+
             '              </div>'+
-            '              <div class="iradio-box black">'+
-            '                <input type="radio" name="plate-color" id="black" class="iradio" value="黑"><i class="icon"></i>'+
+            '              <div class="iradio-box ">'+
+            '                <input type="radio" name="plate-color" id="black" class="iradio black" value="黑"><i class="icon"></i>'+
             '                <label class="iradio-text black" for="black">黑牌</label>'+
             '              </div>' +
-            '              <div class="iradio-box green">'+
-            '                <input type="radio" name="plate-color" id="green" class="iradio" value="绿"><i class="icon"></i>'+
+            '              <div class="iradio-box ">'+
+            '                <input type="radio" name="plate-color" id="green" class="iradio green" value=""><i class="icon"></i>'+
             '                <label class="iradio-text green" for="green">新能源</label>'+
             '              </div>'+
             '            </div>'+
             '            <div class="plate-type-box">'+
-            '              <span id="plate_type_title" class="plate-type">新能源车牌录入&gt;&gt;</span>'+
+            '              <span id="plate_type_title" class="plate-type" data-type="0">卡票号录入&gt;&gt;</span>'+
             '            </div>'+
             '          </div>'+
             // '          <a id="kb_confirm" class="ake-btn confirm-btn hide"><span class="lt20">确</span>定</a>'+
