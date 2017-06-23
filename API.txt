@@ -1,0 +1,29 @@
+﻿调用方式：
+
+  $('#id').keyboard();
+
+  可传参数： 
+    isAddColor   是否添加颜色， 默认为false,PS: 也可使用 $(#id).data('color') 来获取颜色
+    isAutoFill   是否自动填充输入框， 默认为true,
+    title:       自定义键盘头部的标题, 默认为 '添加车牌'
+    buttonText:  添加按钮的文字, 默认为 ‘添加’
+    hiddenCallback: 点击左上角取消按钮时的回调函数
+    confirmCallback: 点击右上角添加按钮时的回调函数
+    beforeOpenFn: 点击元素打开键盘前的处理，必须有返回值，返回值用来判断是否打开键盘，如果返回false，则会阻止打开键盘事件,
+    license: ''
+
+  只需要填入所需设置的参数，按默认的方式则只需要
+
+
+  eg.
+  $('#id').keyboard({
+      isAddColor: false,
+      isAutoFill: true,
+      title: 'TestTEst',
+      buttonText: '发券',
+      hiddenCallback: hiddenCallback,
+      confirmCallback: confirmCallback,
+      beforeOpenFn: function(){
+        return false;
+      }
+  })
